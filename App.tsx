@@ -240,25 +240,25 @@ const App: React.FC = () => {
                 </header>
 
                 <div className="grid grid-cols-[1.15fr_0.85fr] gap-12">
-                  <div className="space-y-12">
+                  <div className="space-y-10">
                     {/* ACCOUNT CARD */}
-                    <div className="bg-[#0a0a0a] p-10 rounded-[2rem] border border-zinc-900/50 shadow-2xl">
-                      <div className="flex justify-between items-center mb-12">
-                        <h3 className="text-3xl font-poppins font-semibold text-white">Account</h3>
+                    <div className="bg-[#0a0a0a] p-5 rounded-[1rem] border border-zinc-900/50 shadow-2xl">
+                      <div className="flex justify-between items-center mb-5">
+                        <h3 className="text-2xl font-poppins font-semibold text-white">Account</h3>
                         <MoreHorizontal className="text-white w-9 h-9" />
                       </div>
                       
-                      <div className="flex gap-6 items-stretch mb-12">
-                        <div className="flex-1 bg-gradient-to-r from-[#111] to-[#0d211f] p-10 rounded-2xl border border-white/[0.03] flex flex-col justify-center gap-4">
-                          <div className="grid grid-cols-[160px_1fr] text-[17px] font-bold">
+                      <div className="flex gap-6 items-stretch mb-5">
+                        <div className="flex-1 bg-gradient-to-r from-[#111] to-[#0d211f] p-8 rounded-2xl border border-white/[0.03] flex flex-col justify-center gap-4">
+                          <div className="grid grid-cols-[185px_1fr] text-[15px] font-bold">
                             <span className="text-zinc-100 uppercase tracking-widest">ID AKUN</span>
                             <span className="text-zinc-100">: {generatedData.phoneNumber}</span>
                           </div>
-                          <div className="grid grid-cols-[160px_1fr] text-[17px] font-bold">
+                          <div className="grid grid-cols-[185px_1fr] text-[15px] font-bold">
                             <span className="text-zinc-100 uppercase tracking-widest">HARGA PRODUK</span>
                             <span className="text-zinc-100">: {formatIDR(generatedData.productPrice)}</span>
                           </div>
-                          <div className="grid grid-cols-[160px_1fr] text-[17px] font-bold">
+                          <div className="grid grid-cols-[185px_1fr] text-[15px] font-bold">
                             <span className="text-zinc-100 uppercase tracking-widest">KOMISI</span>
                             <span className="text-zinc-100">: 20%-50%</span>
                           </div>
@@ -282,12 +282,12 @@ const App: React.FC = () => {
 
                     {/* JOB DETAILS CARD */}
                     <div className="bg-[#0a0a0a] p-10 rounded-[2rem] border border-zinc-900/50 shadow-2xl">
-                      <div className="flex justify-between items-center mb-12">
-                        <h3 className="text-3xl font-poppins font-semibold text-white">Job Details</h3>
+                      <div className="flex justify-between items-center mb-5">
+                        <h3 className="text-2xl font-poppins font-semibold text-white">Job Details</h3>
                         <MoreHorizontal className="text-white w-9 h-9" />
                       </div>
                       
-                      <div className="space-y-8 border-t border-zinc-900 pt-10">
+                      <div className="space-y-1 border-t border-zinc-900 pt-5">
                         {[
                           { label: "Ketentuan", text: "Pesanan di terbitkan oleh sistem" },
                           { label: "Proses", text: "Sistem akan memproses tugas secara otomatis" },
@@ -296,11 +296,11 @@ const App: React.FC = () => {
                           { label: "Konfirmasi", text: "kepada mentor jika terdapat kendala dalam penyelesaian tugas." }
                         ].map((row, idx) => (
                           <div key={idx} className="flex items-start gap-6 text-[17px]">
-                            <span className="w-40 text-zinc-100 font-bold shrink-0 text-left py-1 text-[16px] uppercase tracking-wider">
+                            <span className="w-40 text-zinc-100 font-bold shrink-0 text-left py-1 text-[13px] uppercase tracking-wider">
                               {row.label}
                             </span>
                             <span className="flex-1 text-zinc-500 font-medium leading-relaxed">{row.text}</span>
-                            <span className="text-[#00e676] font-bold shrink-0 ml-4 uppercase text-[15px] tracking-widest">Done</span>
+                            <span className="text-[#00e676] font-bold shrink-0 ml-4 uppercase text-[13px] tracking-widest">Done</span>
                           </div>
                         ))}
                       </div>
@@ -310,7 +310,7 @@ const App: React.FC = () => {
                   <div className="space-y-12">
                     {/* PLEASE READ CARD */}
                     <div className="bg-[#0a0a0a] p-10 rounded-[2rem] border border-zinc-900/50 shadow-2xl h-fit">
-                      <div className="flex justify-between items-center mb-12">
+                      <div className="flex justify-between items-center mb-5">
                         <h3 className="text-[34px] font-poppins font-semibold text-white">Please read</h3>
                         <MoreHorizontal className="text-white w-9 h-9" />
                       </div>
@@ -338,7 +338,7 @@ const App: React.FC = () => {
                       <div className="absolute top-8 right-8">
                         <MoreHorizontal className="text-white w-9 h-9 opacity-30" />
                       </div>
-                      <h3 className="text-[34px] font-poppins font-semibold text-white mb-8">Attention</h3>
+                      <h3 className="text-[20px] font-poppins font-semibold text-white mb-8">Attention</h3>
                       <div className="space-y-4">
                         <p className="text-zinc-100 text-[18px] leading-relaxed italic font-medium opacity-90">
                           Pengguna hanya perlu menunggu selama 5 menit didalam akun kerja Sistem akan menyelesaikan tugas secara otomatis.
@@ -351,7 +351,7 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="mt-24 pt-10 border-t border-zinc-900/50 flex justify-between items-center text-[12px] font-mono text-zinc-800 uppercase tracking-[0.6em]">
+                <div class="mt-20 pt-10 border-t border-zinc-900/50 flex flex-col md:flex-row justify-between items-center gap-6 text-[12px] font-mono text-white uppercase tracking-[0.6em]">
                   <span>Issued: {generatedData.generatedAt}</span>
                   <span>Secure Document &bull; GUCCI-ID-{Math.random().toString(36).substr(2, 9).toUpperCase()}</span>
                 </div>
