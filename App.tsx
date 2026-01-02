@@ -10,6 +10,7 @@ import {
   MoreHorizontal
 } from 'lucide-react';
 import { toPng } from 'html-to-image';
+import { jsPDF } from 'jspdf';
 import { JobType, TaskData } from './types';
 import { formatIDR } from './utils/formatters';
 
@@ -49,6 +50,7 @@ const App: React.FC = () => {
     }, 800);
   };
 
+  // Fungsi Render Gambar (PNG)
   const downloadImage = async () => {
     if (resultRef.current === null) return;
     
@@ -56,24 +58,49 @@ const App: React.FC = () => {
     resultRef.current.style.width = '1200px';
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 100));
-
+      await new Promise(resolve => setTimeout(resolve, 150));
       const dataUrl = await toPng(resultRef.current, { 
         cacheBust: true, 
         pixelRatio: 2,
         backgroundColor: '#000000',
-        style: {
-          borderRadius: '0'
-        }
       });
 
       const link = document.createElement('a');
-      link.download = `gucci-detail-tugas-${phoneNumber}.png`;
+      link.download = `GUCCI_TASK_${phoneNumber}.png`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
-      console.error(err);
-      alert('Gagal mendownload gambar. Coba lagi.');
+      alert('Gagal merender gambar.');
+    } finally {
+      resultRef.current.style.width = originalWidth;
+    }
+  };
+
+  // Fungsi Render PDF (Menggunakan jsPDF)
+  const downloadPDF = async () => {
+    if (resultRef.current === null) return;
+
+    const originalWidth = resultRef.current.style.width;
+    resultRef.current.style.width = '1200px';
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 150));
+      const dataUrl = await toPng(resultRef.current, { 
+        cacheBust: true, 
+        pixelRatio: 2,
+        backgroundColor: '#000000',
+      });
+
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'px',
+        format: [1200, 900] // Sesuaikan dengan aspek rasio render
+      });
+
+      pdf.addImage(dataUrl, 'PNG', 0, 0, 1200, 900);
+      pdf.save(`GUCCI_TASK_DETAIL_${phoneNumber}.pdf`);
+    } catch (err) {
+      alert('Gagal merender PDF.');
     } finally {
       resultRef.current.style.width = originalWidth;
     }
@@ -127,7 +154,7 @@ const App: React.FC = () => {
             <button
               type="submit"
               disabled={isGenerating}
-              className="w-full bg-white hover:bg-zinc-200 text-black font-black py-4 rounded-xl transition-all tracking-[0.2em] text-xs uppercase shadow-lg shadow-white/5 active:scale-[0.98]"
+              className="w-full bg-white hover:bg-zinc-200 text-black font-black py-4 rounded-xl transition-all tracking-[0.2em] text-xs uppercase shadow-lg active:scale-[0.98]"
             >
               {isGenerating ? 'MENGOLAH DATA...' : 'GENERATE DETAIL TUGAS'}
             </button>
@@ -135,7 +162,7 @@ const App: React.FC = () => {
         </form>
       </section>
 
-      {/* HASIL GENERATE */}
+      {/* HASIL RENDER */}
       {generatedData && (
         <div className="max-w-[1250px] mx-auto space-y-10 animate-in fade-in duration-700">
           
@@ -230,7 +257,6 @@ const App: React.FC = () => {
                       { label: "Konfirmasi", text: "kepada mentor jika terdapat kendala dalam penyelesaian tugas." }
                     ].map((row, idx) => (
                       <div key={idx} className="flex items-start gap-6 text-[17px]">
-                        {/* Garis kotak (border) dihilangkan sesuai permintaan user */}
                         <span className="w-36 text-zinc-100 font-bold shrink-0 text-left py-1 text-[15px] uppercase tracking-wider">
                           {row.label}
                         </span>
@@ -294,6 +320,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
+          {/* TOMBOL AKSI DENGAN RENDER BARU */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center pb-24 no-print px-4">
             <button
               onClick={downloadImage}
@@ -303,7 +330,7 @@ const App: React.FC = () => {
               Download Image
             </button>
             <button
-              onClick={() => window.print()}
+              onClick={downloadPDF}
               className="bg-[#111] border border-zinc-800 hover:border-blue-500 hover:bg-[#1a1a1a] text-white py-5 px-14 rounded-2xl transition-all flex items-center justify-center gap-4 font-black uppercase tracking-[0.2em] text-xs shadow-2xl active:scale-[0.98]"
             >
               <FileText className="w-5 h-5 text-blue-500" />
