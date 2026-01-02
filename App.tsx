@@ -31,7 +31,6 @@ const App: React.FC = () => {
 
     setIsGenerating(true);
     
-    // Simulasi proses render data
     setTimeout(() => {
       const price = parseFloat(priceInput);
       const newData: TaskData = {
@@ -47,7 +46,6 @@ const App: React.FC = () => {
       setGeneratedData(newData);
       setIsGenerating(false);
       
-      // Scroll halus ke area pratinjau
       setTimeout(() => {
         const previewElement = document.getElementById('preview-section');
         if (previewElement) {
@@ -57,63 +55,80 @@ const App: React.FC = () => {
     }, 800);
   };
 
+  // Fungsi Render Gambar (Format Komputer/Desktop 1400px)
   const downloadImage = async () => {
     if (resultRef.current === null) return;
     
-    const originalWidth = resultRef.current.style.width;
-    resultRef.current.style.width = '1200px';
+    // Simpan style asli
+    const originalStyle = resultRef.current.style.cssText;
+    
+    // Paksa ukuran desktop 1400px agar layout melebar seperti komputer
+    resultRef.current.style.width = '1400px';
+    resultRef.current.style.minWidth = '1400px';
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 150));
+      // Tunggu render ulang layout
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
       const dataUrl = await toPng(resultRef.current, { 
         cacheBust: true, 
-        pixelRatio: 2,
+        pixelRatio: 2, // Kualitas tinggi
         backgroundColor: '#000000',
+        width: 1400,
+        style: {
+          transform: 'scale(1)',
+          transformOrigin: 'top left'
+        }
       });
 
       const link = document.createElement('a');
-      link.download = `GUCCI_TASK_${phoneNumber}.png`;
+      link.download = `GUCCI_DESKTOP_TASK_${phoneNumber}.png`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
-      alert('Gagal merender gambar.');
+      alert('Gagal merender gambar format komputer.');
     } finally {
-      resultRef.current.style.width = originalWidth;
+      // Kembalikan ke tampilan responsif
+      resultRef.current.style.cssText = originalStyle;
     }
   };
 
+  // Fungsi Render PDF (Format Komputer/Landscape)
   const downloadPDF = async () => {
     if (resultRef.current === null) return;
 
-    const originalWidth = resultRef.current.style.width;
-    resultRef.current.style.width = '1200px';
+    const originalStyle = resultRef.current.style.cssText;
+    resultRef.current.style.width = '1400px';
+    resultRef.current.style.minWidth = '1400px';
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise(resolve => setTimeout(resolve, 200));
       const dataUrl = await toPng(resultRef.current, { 
         cacheBust: true, 
         pixelRatio: 2,
         backgroundColor: '#000000',
+        width: 1400
       });
 
+      // Ukuran A4 Landscape atau Custom Desktop Size
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'px',
-        format: [1200, 900]
+        format: [1400, 1000] 
       });
 
-      pdf.addImage(dataUrl, 'PNG', 0, 0, 1200, 900);
-      pdf.save(`GUCCI_TASK_DETAIL_${phoneNumber}.pdf`);
+      pdf.addImage(dataUrl, 'PNG', 0, 0, 1400, 1000);
+      pdf.save(`GUCCI_DESKTOP_PDF_${phoneNumber}.pdf`);
     } catch (err) {
-      alert('Gagal merender PDF.');
+      alert('Gagal merender PDF format komputer.');
     } finally {
-      resultRef.current.style.width = originalWidth;
+      resultRef.current.style.cssText = originalStyle;
     }
   };
 
   return (
     <div className="min-h-screen bg-black text-zinc-100 font-sans p-4 md:p-8">
-      {/* BAGIAN INPUT */}
+      {/* FORM INPUT */}
       <section className="max-w-4xl mx-auto mb-16 bg-[#0a0a0a] p-8 rounded-3xl border border-zinc-800 shadow-2xl no-print">
         <div className="flex items-center gap-3 mb-8">
           <div className="bg-purple-600 p-2 rounded-lg">
@@ -172,33 +187,31 @@ const App: React.FC = () => {
         </form>
       </section>
 
-      {/* HASIL PRATINJAU */}
+      {/* PRATINJAU HASIL */}
       {generatedData && (
-        <div id="preview-section" className="max-w-[1250px] mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
+        <div id="preview-section" className="max-w-[1400px] mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
           
-          {/* LABEL PRATINJAU */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4 no-print">
             <div className="flex items-center gap-3">
               <div className="bg-green-500/10 p-2 rounded-full">
                 <CheckCircle2 className="w-6 h-6 text-green-500" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-white font-poppins">Pratinjau Hasil</h3>
-                <p className="text-zinc-500 text-sm">Silakan tinjau data di bawah ini sebelum mendownload.</p>
+                <h3 className="text-xl font-bold text-white font-poppins">Pratinjau Hasil (Format Komputer)</h3>
+                <p className="text-zinc-500 text-sm">Hasil download akan otomatis mengikuti ukuran desktop lebar ini.</p>
               </div>
             </div>
           </div>
 
-          {/* AREA DOKUMEN YANG AKAN DI-RENDER */}
           <div className="relative group">
-            {/* Scrollable container untuk mobile agar pratinjau tidak terpotong saat dilihat di layar kecil */}
+            {/* Scroll horizontal hanya aktif di mobile browser untuk pratinjau, hasil download tetap desktop lebar */}
             <div className="overflow-x-auto pb-4 custom-scrollbar">
               <div 
                 ref={resultRef} 
-                className="bg-black p-10 md:p-14 rounded-sm min-w-[1000px] lg:min-w-0"
+                className="bg-black p-10 md:p-14 rounded-sm min-w-[1300px]"
               >
                 {/* HEADER */}
-                <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-14 gap-8">
+                <header className="flex justify-between items-center mb-14 gap-8">
                   <div>
                     <h1 className="text-[42px] font-poppins font-bold tracking-tight text-white leading-none mb-1 uppercase">
                       DETAIL TUGAS PEKERJAAN
@@ -207,8 +220,8 @@ const App: React.FC = () => {
                       GUCCI INDONESIA BUSINESS
                     </p>
                   </div>
-                  <div className="flex items-center gap-5 w-full lg:w-auto">
-                    <div className="relative flex-1 lg:w-[450px]">
+                  <div className="flex items-center gap-5">
+                    <div className="relative w-[450px]">
                       <input 
                         type="text" 
                         placeholder="Detail tugas..." 
@@ -226,9 +239,7 @@ const App: React.FC = () => {
                   </div>
                 </header>
 
-                {/* MAIN CONTENT GRID */}
-                <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-12">
-                  
+                <div className="grid grid-cols-[1.15fr_0.85fr] gap-12">
                   <div className="space-y-12">
                     {/* ACCOUNT CARD */}
                     <div className="bg-[#0a0a0a] p-10 rounded-[2rem] border border-zinc-900/50 shadow-2xl">
@@ -237,7 +248,7 @@ const App: React.FC = () => {
                         <MoreHorizontal className="text-white w-9 h-9" />
                       </div>
                       
-                      <div className="flex flex-col xl:flex-row gap-6 items-stretch mb-12">
+                      <div className="flex gap-6 items-stretch mb-12">
                         <div className="flex-1 bg-gradient-to-r from-[#111] to-[#0d211f] p-10 rounded-2xl border border-white/[0.03] flex flex-col justify-center gap-4">
                           <div className="grid grid-cols-[160px_1fr] text-[17px] font-bold">
                             <span className="text-zinc-100 uppercase tracking-widest">ID AKUN</span>
@@ -285,7 +296,7 @@ const App: React.FC = () => {
                           { label: "Konfirmasi", text: "kepada mentor jika terdapat kendala dalam penyelesaian tugas." }
                         ].map((row, idx) => (
                           <div key={idx} className="flex items-start gap-6 text-[17px]">
-                            <span className="w-36 text-zinc-100 font-bold shrink-0 text-left py-1 text-[15px] uppercase tracking-wider">
+                            <span className="w-40 text-zinc-100 font-bold shrink-0 text-left py-1 text-[16px] uppercase tracking-wider">
                               {row.label}
                             </span>
                             <span className="flex-1 text-zinc-500 font-medium leading-relaxed">{row.text}</span>
@@ -309,7 +320,7 @@ const App: React.FC = () => {
                           "Detail Tugas ini merupakan bagian yang tidak terpisahkan dari perjanjian antara Pengguna dan Pihak Gucci Sistem.",
                           "Setiap dana yang dikirim oleh Pengguna kepada Pihak Sistem Gucci akan secara otomatis dikonversi menjadi Saldo Akun Kerja milik Pengguna.",
                           "Seluruh proses pelaksanaan tugas dilaksanakan sesuai dengan prosedur dan ketentuan yang berlaku pada Sistem Gucci.",
-                          "Dengan melakukan aktivasi tugas, Pengguna menyatakan telah membaca, memahami, dan menyetujui seluruh isi perjanjian, termasuk ketentuan mengenai konversi dana menjadi saldo akun kerja serta mekanisme penyelesaian tugas.",
+                          "Dengan melakukan aktivasi tugas, Pengguna menyatakan telah membaca, memahami, dan menyetuyui seluruh isi perjanjian, termasuk ketentuan mengenai konversi dana menjadi saldo akun kerja serta mekanisme penyelesaian tugas.",
                           "Dokumen ini berlaku sebagai bukti sah persetujuan antara Pengguna dan Pihak Sistem Gucci tanpa memerlukan tanda tangan tertulis."
                         ].map((point, i) => (
                           <li key={i} className="flex items-start gap-5">
@@ -340,7 +351,7 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="mt-24 pt-10 border-t border-zinc-900/50 flex flex-col md:flex-row justify-between items-center gap-6 text-[12px] font-mono text-zinc-800 uppercase tracking-[0.6em]">
+                <div className="mt-24 pt-10 border-t border-zinc-900/50 flex justify-between items-center text-[12px] font-mono text-zinc-800 uppercase tracking-[0.6em]">
                   <span>Issued: {generatedData.generatedAt}</span>
                   <span>Secure Document &bull; GUCCI-ID-{Math.random().toString(36).substr(2, 9).toUpperCase()}</span>
                 </div>
@@ -348,21 +359,20 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* TOMBOL AKSI */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center pb-24 no-print px-4">
             <button
               onClick={downloadImage}
               className="bg-[#111] border border-zinc-800 hover:border-purple-500 hover:bg-[#1a1a1a] text-white py-5 px-14 rounded-2xl transition-all flex items-center justify-center gap-4 font-black uppercase tracking-[0.2em] text-xs shadow-2xl active:scale-[0.98]"
             >
               <ImageIcon className="w-5 h-5 text-purple-500" />
-              DOWNLOAD IMAGE
+              DOWNLOAD IMAGE (DESKTOP)
             </button>
             <button
               onClick={downloadPDF}
               className="bg-[#111] border border-zinc-800 hover:border-blue-500 hover:bg-[#1a1a1a] text-white py-5 px-14 rounded-2xl transition-all flex items-center justify-center gap-4 font-black uppercase tracking-[0.2em] text-xs shadow-2xl active:scale-[0.98]"
             >
               <FileText className="w-5 h-5 text-blue-500" />
-              SIMPAN PDF
+              SIMPAN PDF (DESKTOP)
             </button>
           </div>
         </div>
