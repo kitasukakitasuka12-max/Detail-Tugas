@@ -1,0 +1,17 @@
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #09090b;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure font is correctly applied */
+* {
+  font-family: 'Inter', sans-serif;
+}
