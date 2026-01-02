@@ -4,19 +4,14 @@ import {
   PlusCircle, 
   Image as ImageIcon, 
   FileText, 
-  CheckCircle2, 
-  AlertTriangle, 
-  HelpCircle, 
-  Briefcase,
-  Phone,
-  Wallet,
-  Download,
-  ShieldCheck
+  Search,
+  User,
+  Menu,
+  MoreHorizontal
 } from 'lucide-react';
 import { toPng } from 'html-to-image';
-import { jsPDF } from 'jspdf';
 import { JobType, TaskData } from './types';
-import { formatIDR, generateRandomCommission } from './utils/formatters';
+import { formatIDR } from './utils/formatters';
 
 const App: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -35,16 +30,10 @@ const App: React.FC = () => {
     
     setTimeout(() => {
       const price = parseFloat(priceInput);
-      const commissionRate = generateRandomCommission();
-      const commissionAmount = price * (commissionRate / 100);
-      
       const newData: TaskData = {
         phoneNumber,
         jobType,
         productPrice: price,
-        commissionRate,
-        commissionAmount,
-        totalAmount: price + commissionAmount,
         generatedAt: new Date().toLocaleString('id-ID', { 
           dateStyle: 'medium', 
           timeStyle: 'short' 
@@ -57,204 +46,182 @@ const App: React.FC = () => {
       setTimeout(() => {
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       }, 200);
-    }, 1000);
+    }, 800);
   };
 
   const downloadImage = async () => {
     if (resultRef.current === null) return;
+    
+    const originalWidth = resultRef.current.style.width;
+    resultRef.current.style.width = '1200px';
+
     try {
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       const dataUrl = await toPng(resultRef.current, { 
         cacheBust: true, 
-        pixelRatio: 3,
-        backgroundColor: '#09090b'
+        pixelRatio: 2,
+        backgroundColor: '#000000',
+        style: {
+          borderRadius: '0'
+        }
       });
+
       const link = document.createElement('a');
-      link.download = `gucci-task-${phoneNumber}.png`;
+      link.download = `gucci-detail-tugas-${phoneNumber}.png`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
-      alert('Gagal mendownload gambar');
-    }
-  };
-
-  const downloadPDF = async () => {
-    if (resultRef.current === null) return;
-    try {
-      const dataUrl = await toPng(resultRef.current, { 
-        cacheBust: true, 
-        pixelRatio: 2, 
-        backgroundColor: '#09090b' 
-      });
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgProps = pdf.getImageProperties(dataUrl);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`gucci-task-${phoneNumber}.pdf`);
-    } catch (err) {
-      alert('Gagal mendownload PDF');
+      console.error(err);
+      alert('Gagal mendownload gambar. Coba lagi.');
+    } finally {
+      resultRef.current.style.width = originalWidth;
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col p-4 md:p-12 relative overflow-hidden bg-zinc-950 font-sans">
-      {/* Background Orbs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
-
-      <header className="max-w-5xl mx-auto w-full mb-12 text-center relative z-10">
-        <h1 className="text-4xl md:text-6xl font-poppins font-extrabold tracking-tighter mb-3 gradient-text uppercase italic">
-          DETAIL TUGAS PEKERJAAN
-        </h1>
-        <div className="flex items-center justify-center gap-4">
-          <div className="h-px w-8 bg-zinc-800"></div>
-          <p className="text-zinc-500 text-xs md:text-sm font-bold tracking-[0.5em] uppercase">
-            GUCCI BUSINESS PROGRAM
-          </p>
-          <div className="h-px w-8 bg-zinc-800"></div>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-start relative z-10">
-        {/* Form Section */}
-        <section className="glass-card p-8 md:p-10 rounded-[2.5rem] neon-shadow border-zinc-800/50">
-          <div className="flex items-center gap-4 mb-10">
-            <div className="bg-gradient-to-br from-purple-600 to-blue-600 p-3 rounded-2xl shadow-lg">
-              <PlusCircle className="w-6 h-6 text-white" />
-            </div>
-            <h2 className="text-2xl font-bold font-poppins text-white">Buat Tugas Baru</h2>
+    <div className="min-h-screen bg-black text-zinc-100 font-sans p-4 md:p-8">
+      {/* FORM INPUT */}
+      <section className="max-w-4xl mx-auto mb-16 bg-[#0a0a0a] p-8 rounded-3xl border border-zinc-800 shadow-2xl no-print">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="bg-purple-600 p-2 rounded-lg">
+            <PlusCircle className="w-5 h-5 text-white" />
           </div>
-
-          <form onSubmit={handleGenerate} className="space-y-8">
-            <div className="space-y-3">
-              <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Nomor Telepon</label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Phone className="h-5 w-5 text-zinc-600 group-focus-within:text-purple-500 transition-colors" />
-                </div>
-                <input
-                  type="text"
-                  required
-                  placeholder="Contoh: 08123456789"
-                  className="w-full bg-zinc-900/40 border border-zinc-800 rounded-2xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500/40 transition-all outline-none text-zinc-100 placeholder:text-zinc-700"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Jenis Tugas</label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Briefcase className="h-5 w-5 text-zinc-600 group-focus-within:text-blue-500 transition-colors" />
-                </div>
-                <select
-                  className="w-full bg-zinc-900/40 border border-zinc-800 rounded-2xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/40 transition-all outline-none text-zinc-100 appearance-none cursor-pointer"
-                  value={jobType}
-                  onChange={(e) => setJobType(e.target.value as JobType)}
-                >
-                  <option value={JobType.SINGLE}>{JobType.SINGLE}</option>
-                  <option value={JobType.TRIPLE}>{JobType.TRIPLE}</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Harga Produk (Rupiah)</label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Wallet className="h-5 w-5 text-zinc-600 group-focus-within:text-green-500 transition-colors" />
-                </div>
-                <input
-                  type="number"
-                  required
-                  placeholder="Masukkan nominal harga..."
-                  className="w-full bg-zinc-900/40 border border-zinc-800 rounded-2xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-green-500/20 focus:border-green-500/40 transition-all outline-none text-zinc-100 placeholder:text-zinc-700"
-                  value={priceInput}
-                  onChange={(e) => setPriceInput(e.target.value)}
-                />
-              </div>
-            </div>
-
+          <h2 className="text-xl font-bold font-poppins text-white">Input Data Tugas</h2>
+        </div>
+        <form onSubmit={handleGenerate} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] ml-1">Nomor Telepon</label>
+            <input
+              type="text"
+              required
+              placeholder="08123456789"
+              className="w-full bg-black border border-zinc-800 rounded-xl py-3 px-4 focus:border-purple-500 outline-none transition-all text-sm"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] ml-1">Jenis Tugas</label>
+            <select
+              className="w-full bg-black border border-zinc-800 rounded-xl py-3 px-4 focus:border-blue-500 outline-none appearance-none cursor-pointer text-sm"
+              value={jobType}
+              onChange={(e) => setJobType(e.target.value as JobType)}
+            >
+              <option value={JobType.SINGLE}>1 Pesanan - 1 Produk</option>
+              <option value={JobType.TRIPLE}>1 Pesanan - 3 Produk</option>
+            </select>
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] ml-1">Harga Produk</label>
+            <input
+              type="number"
+              required
+              placeholder="Rp..."
+              className="w-full bg-black border border-zinc-800 rounded-xl py-3 px-4 focus:border-green-500 outline-none text-sm"
+              value={priceInput}
+              onChange={(e) => setPriceInput(e.target.value)}
+            />
+          </div>
+          <div className="md:col-span-3 pt-4">
             <button
               type="submit"
               disabled={isGenerating}
-              className={`w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-5 px-6 rounded-2xl transition-all shadow-xl hover:shadow-purple-500/20 active:scale-[0.98] flex items-center justify-center gap-3 ${isGenerating ? 'opacity-70 cursor-not-allowed' : ''}`}
+              className="w-full bg-white hover:bg-zinc-200 text-black font-black py-4 rounded-xl transition-all tracking-[0.2em] text-xs uppercase shadow-lg shadow-white/5 active:scale-[0.98]"
             >
-              {isGenerating ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/30 border-t-white"></div>
-                  Membangun Data...
-                </>
-              ) : (
-                <>
-                  <PlusCircle className="w-5 h-5" />
-                  Generate Sekarang
-                </>
-              )}
+              {isGenerating ? 'MENGOLAH DATA...' : 'GENERATE DETAIL TUGAS'}
             </button>
-          </form>
-        </section>
+          </div>
+        </form>
+      </section>
 
-        {/* Result Section */}
-        <section className="space-y-8">
-          {!generatedData ? (
-            <div className="glass-card p-16 rounded-[2.5rem] border-dashed border-zinc-800 flex flex-col items-center justify-center text-zinc-700 h-full min-h-[500px]">
-              <div className="bg-zinc-900/50 p-8 rounded-full mb-8 ring-1 ring-zinc-800/50">
-                <FileText className="w-12 h-12 opacity-20" />
+      {/* HASIL GENERATE */}
+      {generatedData && (
+        <div className="max-w-[1250px] mx-auto space-y-10 animate-in fade-in duration-700">
+          
+          <div ref={resultRef} className="bg-black p-10 md:p-14 rounded-sm">
+            
+            {/* HEADER */}
+            <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-14 gap-8">
+              <div>
+                <h1 className="text-[42px] font-poppins font-bold tracking-tight text-white leading-none mb-1 uppercase">
+                  DETAIL TUGAS PEKERJAAN
+                </h1>
+                <p className="text-[19px] font-bold text-zinc-200 tracking-wider uppercase">
+                  GUCCI INDONESIA BUSINESS
+                </p>
               </div>
-              <p className="text-center font-medium italic opacity-40 max-w-[200px]">
-                Lengkapi form untuk mencetak detail tugas.
-              </p>
-            </div>
-          ) : (
-            <div className="animate-in fade-in slide-in-from-bottom-6 duration-700 space-y-8">
-              {/* Document Result */}
-              <div ref={resultRef} className="p-10 rounded-[2.5rem] bg-[#09090b] border border-zinc-800 shadow-2xl space-y-8">
-                <div className="text-center border-b border-zinc-900 pb-8 mb-2">
-                    <h2 className="text-2xl font-poppins font-bold gradient-text tracking-tighter italic">GUCCI BUSINESS PROGRAM</h2>
-                    <p className="text-[10px] text-zinc-600 uppercase tracking-[0.5em] mt-3 font-black">Official Verification Document</p>
+              <div className="flex items-center gap-5 w-full lg:w-auto">
+                <div className="relative flex-1 lg:w-[450px]">
+                  <input 
+                    type="text" 
+                    placeholder="Detail tugas..." 
+                    className="w-full bg-[#0d0d0d] border border-zinc-800 rounded-lg py-3.5 px-6 text-zinc-600 text-lg outline-none pr-14"
+                    readOnly
+                  />
+                  <Search className="absolute right-5 top-4 w-6 h-6 text-zinc-600" />
                 </div>
+                <div className="w-14 h-14 bg-[#0d0d0d] rounded-full flex items-center justify-center border border-zinc-800">
+                  <User className="w-8 h-8 text-white" />
+                </div>
+                <div className="w-14 h-14 bg-gradient-to-br from-zinc-700 to-zinc-900 rounded-2xl flex items-center justify-center border border-zinc-700">
+                  <Menu className="w-8 h-8 text-white" />
+                </div>
+              </div>
+            </header>
 
-                {/* Account Details Box */}
-                <div className="bg-zinc-900/40 rounded-3xl p-8 border border-zinc-800 shadow-inner">
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="flex items-center gap-3">
-                        <div className="w-1.5 h-6 bg-purple-500 rounded-full"></div>
-                        <h3 className="text-sm font-black text-white uppercase tracking-widest">Account Details</h3>
-                    </div>
-                    <ShieldCheck className="w-5 h-5 text-purple-500/50" />
+            {/* MAIN CONTENT GRID */}
+            <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-12">
+              
+              <div className="space-y-12">
+                
+                {/* ACCOUNT CARD */}
+                <div className="bg-[#0a0a0a] p-10 rounded-[2rem] border border-zinc-900/50 shadow-2xl">
+                  <div className="flex justify-between items-center mb-12">
+                    <h3 className="text-3xl font-poppins font-semibold text-white">Account</h3>
+                    <MoreHorizontal className="text-white w-9 h-9" />
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-1">
-                      <span className="text-[10px] text-zinc-500 uppercase font-black tracking-widest">Nomor Telepon</span>
-                      <p className="text-zinc-100 font-bold text-lg">{generatedData.phoneNumber}</p>
+                  <div className="flex flex-col xl:flex-row gap-6 items-stretch mb-12">
+                    <div className="flex-1 bg-gradient-to-r from-[#111] to-[#0d211f] p-10 rounded-2xl border border-white/[0.03] flex flex-col justify-center gap-4">
+                      <div className="grid grid-cols-[160px_1fr] text-[17px] font-bold">
+                        <span className="text-zinc-100 uppercase tracking-widest">ID AKUN</span>
+                        <span className="text-zinc-100">: {generatedData.phoneNumber}</span>
+                      </div>
+                      <div className="grid grid-cols-[160px_1fr] text-[17px] font-bold">
+                        <span className="text-zinc-100 uppercase tracking-widest">HARGA PRODUK</span>
+                        <span className="text-zinc-100">: {formatIDR(generatedData.productPrice)}</span>
+                      </div>
+                      <div className="grid grid-cols-[160px_1fr] text-[17px] font-bold">
+                        <span className="text-zinc-100 uppercase tracking-widest">KOMISI</span>
+                        <span className="text-zinc-100">: 20%-50%</span>
+                      </div>
                     </div>
-                    <div className="space-y-1">
-                      <span className="text-[10px] text-zinc-500 uppercase font-black tracking-widest">Harga Produk</span>
-                      <p className="text-zinc-100 font-bold text-lg">{formatIDR(generatedData.productPrice)}</p>
+                    
+                    <div className="flex-1 bg-gradient-to-r from-[#0d1a29] to-[#0a0a0a] rounded-2xl border border-zinc-900 p-8 flex items-center justify-between gap-4">
+                      <div className="text-[14px] font-bold text-zinc-100 uppercase tracking-[0.2em] leading-snug">
+                        MASA BERLAKU<br/>TUGAS PESANAN
+                      </div>
+                      <div className="w-24 h-24 rounded-2xl border-2 border-zinc-800 bg-black flex flex-col items-center justify-center shadow-inner shrink-0">
+                        <span className="text-4xl font-black text-white leading-none">60</span>
+                        <span className="text-[11px] font-bold text-zinc-500 mt-1.5 uppercase tracking-widest">MENIT</span>
+                      </div>
                     </div>
-                    <div className="space-y-1">
-                      <span className="text-[10px] text-zinc-500 uppercase font-black tracking-widest">Komisi ({generatedData.commissionRate}%)</span>
-                      <p className="text-green-400 font-bold text-lg">{formatIDR(generatedData.commissionAmount)}</p>
-                    </div>
-                    <div className="space-y-1">
-                      <span className="text-[10px] text-zinc-500 uppercase font-black tracking-widest">Total Pengembalian</span>
-                      <p className="text-blue-400 font-black text-2xl">{formatIDR(generatedData.totalAmount)}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Job Specification Box (Matching Example Image) */}
-                <div className="bg-zinc-900/40 rounded-3xl p-8 border border-zinc-800 overflow-hidden">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1.5 h-6 bg-blue-500 rounded-full"></div>
-                    <h3 className="text-sm font-black text-white uppercase tracking-widest">Job Specification</h3>
                   </div>
                   
-                  <div className="space-y-5">
+                  <p className="text-center text-[#00e676] text-base font-semibold tracking-widest uppercase">
+                    Pastikan sudah sesuai dengan pilihan
+                  </p>
+                </div>
+
+                {/* JOB DETAILS CARD */}
+                <div className="bg-[#0a0a0a] p-10 rounded-[2rem] border border-zinc-900/50 shadow-2xl">
+                  <div className="flex justify-between items-center mb-12">
+                    <h3 className="text-3xl font-poppins font-semibold text-white">Job Details</h3>
+                    <MoreHorizontal className="text-white w-9 h-9" />
+                  </div>
+                  
+                  <div className="space-y-8 border-t border-zinc-900 pt-10">
                     {[
                       { label: "Ketentuan", text: "Pesanan di terbitkan oleh sistem" },
                       { label: "Proses", text: "Sistem akan memproses tugas secara otomatis" },
@@ -262,70 +229,89 @@ const App: React.FC = () => {
                       { label: "Penyelesaian", text: "Jika pesanan belum selesai, sistem tidak akan mengizinkan penarikan." },
                       { label: "Konfirmasi", text: "kepada mentor jika terdapat kendala dalam penyelesaian tugas." }
                     ].map((row, idx) => (
-                      <div key={idx} className="flex items-center gap-4 text-xs md:text-sm border-b border-zinc-900/50 pb-4 last:border-0 last:pb-0">
-                        <span className="w-24 md:w-32 text-zinc-100 font-bold shrink-0">{row.label}</span>
+                      <div key={idx} className="flex items-start gap-6 text-[17px]">
+                        {/* Garis kotak (border) dihilangkan sesuai permintaan user */}
+                        <span className="w-36 text-zinc-100 font-bold shrink-0 text-left py-1 text-[15px] uppercase tracking-wider">
+                          {row.label}
+                        </span>
                         <span className="flex-1 text-zinc-500 font-medium leading-relaxed">{row.text}</span>
-                        <span className="text-green-500 font-bold shrink-0 ml-2">Done</span>
+                        <span className="text-[#00e676] font-bold shrink-0 ml-4 uppercase text-[15px] tracking-widest">Done</span>
                       </div>
                     ))}
                   </div>
                 </div>
-
-                {/* Footnotes Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-zinc-900/20 rounded-2xl p-6 border border-zinc-900/50">
-                    <div className="flex items-center gap-2 mb-3 text-zinc-500">
-                      <HelpCircle className="w-4 h-4" />
-                      <span className="text-[10px] font-black uppercase tracking-widest">Please Read</span>
-                    </div>
-                    <p className="text-[10px] text-zinc-600 leading-relaxed italic">
-                      Dana komisi dihitung oleh sistem secara akurat. Penarikan hanya dapat diproses setelah status tugas seluruhnya "Done".
-                    </p>
-                  </div>
-                  <div className="bg-red-500/5 rounded-2xl p-6 border border-red-500/10">
-                    <div className="flex items-center gap-2 mb-3 text-red-500/70">
-                      <AlertTriangle className="w-4 h-4" />
-                      <span className="text-[10px] font-black uppercase tracking-widest">Attention</span>
-                    </div>
-                    <p className="text-[10px] text-red-500/60 leading-relaxed font-bold">
-                      DOKUMEN RAHASIA. JANGAN BAGIKAN TANGKAPAN LAYAR INI KEPADA PIHAK KETIGA TANPA IZIN MENTOR ANDA.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center pt-4 text-[9px] text-zinc-800 font-mono font-bold uppercase tracking-widest">
-                    <span>Generated: {generatedData.generatedAt}</span>
-                    <span className="bg-zinc-900 px-3 py-1 rounded-lg">SID: #{Math.floor(Math.random() * 999999)}</span>
-                </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-5 relative z-10">
-                <button
-                  onClick={downloadImage}
-                  className="flex-1 bg-zinc-900 border border-zinc-800 hover:border-blue-500/50 text-zinc-400 hover:text-white py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-3 group shadow-lg"
-                >
-                  <ImageIcon className="w-5 h-5 group-hover:text-blue-400 transition-colors" />
-                  <span className="font-bold text-sm uppercase tracking-widest">Download Image</span>
-                </button>
-                <button
-                  onClick={downloadPDF}
-                  className="flex-1 bg-zinc-900 border border-zinc-800 hover:border-purple-500/50 text-zinc-400 hover:text-white py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-3 group shadow-lg"
-                >
-                  <FileText className="w-5 h-5 group-hover:text-purple-400 transition-colors" />
-                  <span className="font-bold text-sm uppercase tracking-widest">Download PDF</span>
-                </button>
+              <div className="space-y-12">
+                
+                {/* PLEASE READ CARD */}
+                <div className="bg-[#0a0a0a] p-10 rounded-[2rem] border border-zinc-900/50 shadow-2xl h-fit">
+                  <div className="flex justify-between items-center mb-12">
+                    <h3 className="text-[34px] font-poppins font-semibold text-white">Please read</h3>
+                    <MoreHorizontal className="text-white w-9 h-9" />
+                  </div>
+                  
+                  <ul className="space-y-8">
+                    {[
+                      "Detail Tugas ini merupakan bagian yang tidak terpisahkan dari perjanjian antara Pengguna dan Pihak Gucci Sistem.",
+                      "Setiap dana yang dikirim oleh Pengguna kepada Pihak Sistem Gucci akan secara otomatis dikonversi menjadi Saldo Akun Kerja milik Pengguna.",
+                      "Seluruh proses pelaksanaan tugas dilaksanakan sesuai dengan prosedur dan ketentuan yang berlaku pada Sistem Gucci.",
+                      "Dengan melakukan aktivasi tugas, Pengguna menyatakan telah membaca, memahami, dan menyetujui seluruh isi perjanjian, termasuk ketentuan mengenai konversi dana menjadi saldo akun kerja serta mekanisme penyelesaian tugas.",
+                      "Dokumen ini berlaku sebagai bukti sah persetujuan antara Pengguna dan Pihak Sistem Gucci tanpa memerlukan tanda tangan tertulis."
+                    ].map((point, i) => (
+                      <li key={i} className="flex items-start gap-5">
+                        <div className="w-2 h-2 bg-zinc-400 rounded-full mt-2.5 shrink-0"></div>
+                        <p className="text-zinc-400 text-[17px] leading-relaxed font-normal">
+                          {point}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* ATTENTION CARD */}
+                <div className="bg-gradient-to-br from-[#1a1c3d] via-[#0a0a0a] to-[#0d211f] p-12 rounded-[2rem] border border-zinc-800/50 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.5)] relative min-h-[280px] flex flex-col justify-center">
+                  <div className="absolute top-8 right-8">
+                    <MoreHorizontal className="text-white w-9 h-9 opacity-30" />
+                  </div>
+                  <h3 className="text-[34px] font-poppins font-semibold text-white mb-8">Attention</h3>
+                  <div className="space-y-4">
+                    <p className="text-zinc-100 text-[18px] leading-relaxed italic font-medium opacity-90">
+                      Pengguna hanya perlu menunggu selama 5 menit didalam akun kerja Sistem akan menyelesaikan tugas secara otomatis.
+                    </p>
+                    <p className="text-zinc-100 text-[18px] leading-relaxed italic font-bold opacity-95">
+                      Jika ada kendala harap berkonsultasi dengan mentor
+                    </p>
+                  </div>
+                </div>
+
               </div>
             </div>
-          )}
-        </section>
-      </main>
 
-      <footer className="mt-20 pt-10 border-t border-zinc-900 text-center pb-12 opacity-50 relative z-10">
-        <p className="text-zinc-600 text-[10px] uppercase tracking-[0.6em] font-black">
-          &copy; {new Date().getFullYear()} Gucci Business Group &bull; Secure Protocol
-        </p>
-      </footer>
+            <div className="mt-24 pt-10 border-t border-zinc-900/50 flex flex-col md:flex-row justify-between items-center gap-6 text-[12px] font-mono text-zinc-800 uppercase tracking-[0.6em]">
+              <span>Issued: {generatedData.generatedAt}</span>
+              <span>Secure Document &bull; GUCCI-ID-{Math.random().toString(36).substr(2, 9).toUpperCase()}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center pb-24 no-print px-4">
+            <button
+              onClick={downloadImage}
+              className="bg-[#111] border border-zinc-800 hover:border-purple-500 hover:bg-[#1a1a1a] text-white py-5 px-14 rounded-2xl transition-all flex items-center justify-center gap-4 font-black uppercase tracking-[0.2em] text-xs shadow-2xl active:scale-[0.98]"
+            >
+              <ImageIcon className="w-5 h-5 text-purple-500" />
+              Download Image
+            </button>
+            <button
+              onClick={() => window.print()}
+              className="bg-[#111] border border-zinc-800 hover:border-blue-500 hover:bg-[#1a1a1a] text-white py-5 px-14 rounded-2xl transition-all flex items-center justify-center gap-4 font-black uppercase tracking-[0.2em] text-xs shadow-2xl active:scale-[0.98]"
+            >
+              <FileText className="w-5 h-5 text-blue-500" />
+              Simpan PDF
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gucci Business Program - Detail Tugas Pekerjaan</title>
-    <!-- Tailwind CDN untuk memastikan tampilan langsung berfungsi -->
+    <title>Gucci Business Program - Detail Tugas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,35 +16,23 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         poppins: ['Poppins', 'sans-serif'],
-                    },
-                    colors: {
-                        zinc: {
-                            950: '#09090b',
-                        }
                     }
                 }
             }
         }
     </script>
     <style type="text/css">
-        .gradient-text {
-            background: linear-gradient(to right, #a855f7, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        body {
+            background-color: #000000;
         }
-        .glass-card {
-            background: rgba(18, 18, 18, 0.7);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: #000 !important; -webkit-print-color-adjust: exact; }
+            * { color-adjust: exact; }
         }
-        .neon-shadow {
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #09090b; }
-        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
     </style>
     <script type="importmap">
 {
@@ -63,7 +50,7 @@
 }
 </script>
 </head>
-<body class="bg-zinc-950 text-zinc-100 font-sans">
+<body class="text-zinc-100 antialiased">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>

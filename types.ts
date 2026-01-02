@@ -8,8 +8,5 @@ export interface TaskData {
   phoneNumber: string;
   jobType: JobType;
   productPrice: number;
-  commissionRate: number;
-  commissionAmount: number;
-  totalAmount: number;
   generatedAt: string;
 }

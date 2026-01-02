@@ -7,8 +7,3 @@ export const formatIDR = (amount: number): string => {
     maximumFractionDigits: 0,
   }).format(amount);
 };
-
-export const generateRandomCommission = (): number => {
-  // Random percentage between 20% and 50%
-  return Math.floor(Math.random() * (50 - 20 + 1)) + 20;
-};
