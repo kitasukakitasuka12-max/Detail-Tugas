@@ -234,7 +234,7 @@ const App: React.FC = () => {
     <span>: {formatIDR(generatedData.productPrice)}</span>
 
     <span className="uppercase">KOMISI</span>
-    <span>: 20%</span>
+    <span>: 20%-50%</span>
   </div>
 </div>
                     <div className="flex-1 bg-gradient-to-r from-[#0d1a29] to-[#0a0a0a] p-6 rounded-xl border border-zinc-800 flex items-center justify-between">
