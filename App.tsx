@@ -243,7 +243,7 @@ const App: React.FC = () => {
                   <div className="space-y-10">
                     {/* ACCOUNT CARD */}
                     <div class="bg-[#0a0a0a] p-8 rounded-[1rem] border border-zinc-900/50 shadow-2xl">
-  <!-- Header -->
+   {/* Header */}
   <div class="flex justify-between items-center mb-8">
     <h3 class="text-2xl font-poppins font-semibold text-white">Account</h3>
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -256,9 +256,9 @@ const App: React.FC = () => {
     </svg>
   </div>
 
-  <!-- Content -->
+    {/* Content */}
   <div class="flex gap-5 items-stretch mb-10">
-    <!-- Left Section -->
+    {/* Left Section */}
     <div class="flex-1 bg-gradient-to-r from-[#111] to-[#0d211f] p-5 rounded-2xl 
                 border border-white/[0.03] flex flex-col justify-center"
          style="height: 122px;">
@@ -276,7 +276,7 @@ const App: React.FC = () => {
       </div>
     </div>
 
-    <!-- Right Section -->
+    {/* Right Section --> */}
     <div class="flex-1 bg-gradient-to-r from-[#0d1a29] to-[#0a0a0a] rounded-2xl 
                 border border-zinc-900 p-8 flex items-center justify-between gap-4"
          style="height: 122px;">
@@ -292,7 +292,7 @@ const App: React.FC = () => {
     </div>
   </div>
 
-  <!-- Footer -->
+   {/*  Footer */}
   <p class="text-center text-[#00e676] text-base font-semibold tracking-widest uppercase">
     Pastikan sudah sesuai dengan pilihan
   </p>
