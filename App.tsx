@@ -239,55 +239,74 @@ const App: React.FC = () => {
                   </div>
                 </header>
 
-                <div className="grid grid-cols-[1.15fr_0.85fr] gap-12">
+                <div className="grid grid-cols-[1.15fr_0.85fr] gap-10">
                   <div className="space-y-10">
                     {/* ACCOUNT CARD */}
-                    <div className="bg-[#0a0a0a] p-5 rounded-[1rem] border border-zinc-900/50 shadow-2xl">
-                      <div className="flex justify-between items-center mb-5">
-                        <h3 className="text-2xl font-poppins font-semibold text-white">Account</h3>
-                        <MoreHorizontal className="text-white w-9 h-9" />
-                      </div>
-                      
-                      <div className="flex gap-6 items-stretch mb-5">
-                        <div className="flex-1 bg-gradient-to-r from-[#111] to-[#0d211f] p-8 rounded-2xl border border-white/[0.03] flex flex-col justify-center gap-1">
-                          <div className="grid grid-cols-[150px_1fr] text-[15px] font-bold">
-                            <span className="text-zinc-100 uppercase tracking-widest">ID AKUN</span>
-                            <span className="text-zinc-100">: {generatedData.phoneNumber}</span>
-                          </div>
-                          <div className="grid grid-cols-[150px_1fr] text-[15px] font-bold">
-                            <span className="text-zinc-100 uppercase tracking-widest">HARGA PRODUK</span>
-                            <span className="text-zinc-100">: {formatIDR(generatedData.productPrice)}</span>
-                          </div>
-                          <div className="grid grid-cols-[150px_1fr] text-[15px] font-bold">
-                            <span className="text-zinc-100 uppercase tracking-widest">KOMISI</span>
-                            <span className="text-zinc-100">: 20%-50%</span>
-                          </div>
-                        </div>
-                        
-                        <div className="flex-1 bg-gradient-to-r from-[#0d1a29] to-[#0a0a0a] rounded-2xl border border-zinc-900 p-8 flex items-center justify-between gap-4">
-                          <div className="text-[14px] font-bold text-zinc-100 uppercase tracking-[0.2em] leading-snug">
-                            MASA BERLAKU<br/>TUGAS PESANAN
-                          </div>
-                          <div className="w-24 h-24 rounded-2xl border-2 border-zinc-800 bg-black flex flex-col items-center justify-center shadow-inner shrink-0">
-                            <span className="text-4xl font-black text-white leading-none">60</span>
-                            <span className="text-[11px] font-bold text-zinc-500 mt-1.5 uppercase tracking-widest">MENIT</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <p className="text-center text-[#00e676] text-base font-semibold tracking-widest uppercase">
-                        Pastikan sudah sesuai dengan pilihan
-                      </p>
-                    </div>
+                    <div class="bg-[#0a0a0a] p-8 rounded-[1rem] border border-zinc-900/50 shadow-2xl">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-8">
+    <h3 class="text-2xl font-poppins font-semibold text-white">Account</h3>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         class="lucide lucide-ellipsis text-white w-9 h-9">
+      <circle cx="12" cy="12" r="1"></circle>
+      <circle cx="19" cy="12" r="1"></circle>
+      <circle cx="5" cy="12" r="1"></circle>
+    </svg>
+  </div>
+
+  <!-- Content -->
+  <div class="flex gap-5 items-stretch mb-10">
+    <!-- Left Section -->
+    <div class="flex-1 bg-gradient-to-r from-[#111] to-[#0d211f] p-5 rounded-2xl 
+                border border-white/[0.03] flex flex-col justify-center"
+         style="height: 122px;">
+      <div class="grid grid-cols-[145px_1fr] text-[15px] font-bold">
+        <span class="text-zinc-100 uppercase tracking-widest">ID AKUN</span>
+        <span class="text-zinc-100">: {generatedData.phoneNumber}</span>
+      </div>
+      <div class="grid grid-cols-[145px_1fr] text-[15px] font-bold">
+        <span class="text-zinc-100 uppercase tracking-widest">HARGA PRODUK</span>
+        <span class="text-zinc-100">: {formatIDR(generatedData.productPrice)}</span>
+      </div>
+      <div class="grid grid-cols-[145px_1fr] text-[15px] font-bold">
+        <span class="text-zinc-100 uppercase tracking-widest">KOMISI</span>
+        <span class="text-zinc-100">: 20%-50%</span>
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="flex-1 bg-gradient-to-r from-[#0d1a29] to-[#0a0a0a] rounded-2xl 
+                border border-zinc-900 p-8 flex items-center justify-between gap-4"
+         style="height: 122px;">
+      <div class="text-[14px] font-bold text-zinc-100 uppercase tracking-[0.1em] leading-snug">
+        MASA BERLAKU<br>TUGAS PESANAN
+      </div>
+      <div class="rounded-2xl border border-zinc-800 bg-black flex flex-col items-center justify-center 
+                  shadow-inner shrink-0"
+           style="width: 89px; height: 74px;">
+        <span class="text-3xl font-black text-white leading-none">60</span>
+        <span class="text-[10px] font-bold text-zinc-500 mt-1.5 uppercase tracking-widest">MENIT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <p class="text-center text-[#00e676] text-base font-semibold tracking-widest uppercase">
+    Pastikan sudah sesuai dengan pilihan
+  </p>
+</div>
+
 
                     {/* JOB DETAILS CARD */}
-                    <div className="bg-[#0a0a0a] p-10 rounded-[2rem] border border-zinc-900/50 shadow-2xl">
-                      <div className="flex justify-between items-center mb-5">
+                    <div className="bg-[#0a0a0a] p-10 rounded-[1rem] border border-zinc-900/50 shadow-2xl">
+                      <div className="flex justify-between items-center mb-8">
                         <h3 className="text-2xl font-poppins font-semibold text-white">Job Details</h3>
                         <MoreHorizontal className="text-white w-9 h-9" />
                       </div>
                       
-                      <div className="space-y-1 border-t border-zinc-900 pt-5">
+                      <div className="space-y-1 border-t border-zinc-900 pt-6">
                         {[
                           { label: "Ketentuan", text: "Pesanan di terbitkan oleh sistem" },
                           { label: "Proses", text: "Sistem akan memproses tugas secara otomatis" },
@@ -295,7 +314,7 @@ const App: React.FC = () => {
                           { label: "Penyelesaian", text: "Jika pesanan belum selesai, sistem tidak akan mengizinkan penarikan." },
                           { label: "Konfirmasi", text: "kepada mentor jika terdapat kendala dalam penyelesaian tugas." }
                         ].map((row, idx) => (
-                          <div key={idx} className="flex items-start gap-6 text-[17px]">
+                          <div key={idx} className="flex items-start gap-1 text-[17px]">
                             <span className="w-40 text-zinc-100 font-bold shrink-0 text-left py-1 text-[13px] uppercase tracking-wider">
                               {row.label}
                             </span>
@@ -307,7 +326,7 @@ const App: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="space-y-12">
+                  <div className="space-y-10">
                     {/* PLEASE READ CARD */}
                     <div className="bg-[#0a0a0a] p-10 rounded-[2rem] border border-zinc-900/50 shadow-2xl h-fit">
                       <div className="flex justify-between items-center mb-5">
@@ -315,7 +334,7 @@ const App: React.FC = () => {
                         <MoreHorizontal className="text-white w-9 h-9" />
                       </div>
                       
-                      <ul className="space-y-8">
+                      <ul className="space-y-5">
                         {[
                           "Detail Tugas ini merupakan bagian yang tidak terpisahkan dari perjanjian antara Pengguna dan Pihak Gucci Sistem.",
                           "Setiap dana yang dikirim oleh Pengguna kepada Pihak Sistem Gucci akan secara otomatis dikonversi menjadi Saldo Akun Kerja milik Pengguna.",
