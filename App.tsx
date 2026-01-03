@@ -101,7 +101,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#040b16] to-[#040b16] text-zinc-100 font-sans p-5 md:p-5">
+    <div className="min-h-screen bg-gradient-to-br from-[#1a1c3d] via-[#0a0a0a] text-zinc-100 font-sans p-5 md:p-5">
       {/* FORM INPUT */}
       <section className="max-w-4xl mx-auto mb-16 bg-[#0a0a0a] p-8 rounded-3xl border border-zinc-800 shadow-2xl">
         <div className="flex items-center gap-3 mb-8">
