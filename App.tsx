@@ -101,7 +101,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-zinc-100 font-sans p-6 md:p-10">
+    <div className="min-h-screen bg-gradient-to-r from-[#040b16] to-[#040b16] text-zinc-100 font-sans p-5 md:p-5">
       {/* FORM INPUT */}
       <section className="max-w-4xl mx-auto mb-16 bg-[#0a0a0a] p-8 rounded-3xl border border-zinc-800 shadow-2xl">
         <div className="flex items-center gap-3 mb-8">
@@ -109,7 +109,7 @@ const App: React.FC = () => {
             <PlusCircle className="w-5 h-5 text-white" />
           </div>
           <h2 className="text-xl font-bold font-poppins text-white">
-            Input Data Tugas
+            INPUT DATA TUGAS
           </h2>
         </div>
         <form
