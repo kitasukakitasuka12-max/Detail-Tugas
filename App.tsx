@@ -225,11 +225,18 @@ const App: React.FC = () => {
                     <MoreHorizontal className="text-white" />
                   </div>
                   <div className="flex gap-4 mb-8">
-                    <div className="flex-1 bg-gradient-to-r from-[#111] to-[#0d211f] p-4 rounded-xl border border-white/5">
-                      <p>ID AKUN : {generatedData.phoneNumber}</p>
-                      <p>HARGA PRODUK : {formatIDR(generatedData.productPrice)}</p>
-                      <p>KOMISI : 20%</p>
-                    </div>
+                    <div className="flex-1 bg-gradient-to-r from-[#4B0082] to-[#2E8B8B] p-6 rounded-xl border border-white/20 flex flex-col justify-center shadow-md">
+  <div className="grid grid-cols-[140px_1fr] gap-x-2 text-white text-[15px] font-semibold tracking-wide">
+    <span className="uppercase">ID AKUN</span>
+    <span>: {generatedData.phoneNumber}</span>
+
+    <span className="uppercase">HARGA PRODUK</span>
+    <span>: {formatIDR(generatedData.productPrice)}</span>
+
+    <span className="uppercase">KOMISI</span>
+    <span>: 20%</span>
+  </div>
+</div>
                     <div className="flex-1 bg-gradient-to-r from-[#0d1a29] to-[#0a0a0a] p-6 rounded-xl border border-zinc-800 flex items-center justify-between">
                       <p className="text-sm uppercase leading-tight">
                         MASA BERLAKU <br /> TUGAS PESANAN
@@ -287,16 +294,16 @@ const App: React.FC = () => {
               {/* KANAN */}
               <div className="space-y-8">
                 <div className="bg-[#0a0a0a] p-6 rounded-xl border border-zinc-800 shadow-2xl">
-                  <div className="flex justify-between items-center mb-5">
+                  <div className="flex justify-between items-center mb-6">
                     <h3 className="text-2xl font-semibold">Please read</h3>
                     <MoreHorizontal className="text-white" />
                   </div>
-                  <ul className="space-y-3 text-sm text-zinc-400">
+                  <ul className="space-y-2 text-sm text-zinc-400">
                     <li>Detail Tugas ini merupakan bagian dari perjanjian antara Pengguna dan Pihak Gucci Sistem.</li>
-                    <li>Setiap dana yang dikirim akan otomatis dikonversi menjadi Saldo Akun Kerja.</li>
-                    <li>Proses pelaksanaan tugas mengikuti prosedur Sistem Gucci.</li>
-                    <li>Aktivasi tugas berarti menyetujui seluruh ketentuan dan mekanisme sistem.</li>
-                    <li>Dokumen ini sah tanpa tanda tangan tertulis.</li>
+                    <li>Setiap dana yang dikirim oleh Pengguna kepada Pihak Sistem Prada akan secara otomatis dikonversi menjadi Saldo Akun Kerja milik Pengguna.</li>
+                    <li>Seluruh proses pelaksanaan tugas dilaksanakan sesuai dengan prosedur dan ketentuan yang berlaku pada Sistem Gucci.</li>
+                    <li>Dengan melakukan aktivasi tugas, Pengguna menyatakan telah membaca, memahami, dan menyetujui seluruh isi perjanjian, termasuk ketentuan mengenai konversi dana menjadi saldo akun kerja serta mekanisme penyelesaian tugas.</li>
+                    <li>Dokumen ini berlaku sebagai bukti sah persetujuan antara Pengguna dan Pihak Sistem Prada tanpa memerlukan tanda tangan tertulis.</li>
                   </ul>
                 </div>
 
