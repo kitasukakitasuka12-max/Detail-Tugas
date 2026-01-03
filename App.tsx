@@ -320,7 +320,7 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            <footer className="mt-10 pt-4 border-t border-zinc-800 text-center text-[10px] text-zinc-500 uppercase tracking-widest">
+            <footer className="mt-10 pt-4 border-t border-zinc-800 text-center text-[13px] text-zinc-200 uppercase tracking-widest">
               Issued: {generatedData.generatedAt} • Secure Document •
               GUCCI-ID-{Math.random().toString(36).substr(2, 9).toUpperCase()}
             </footer>
