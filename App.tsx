@@ -197,7 +197,7 @@ const App: React.FC = () => {
                   GUCCI BUSINESS PROGRAM
                 </p>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-8">
                 <div className="relative w-[400px]">
                   <input
                     type="text"
