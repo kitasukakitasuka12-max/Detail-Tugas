@@ -249,16 +249,16 @@ const App: React.FC = () => {
                       </div>
                       
                       <div className="flex gap-6 items-stretch mb-5">
-                        <div className="flex-1 bg-gradient-to-r from-[#111] to-[#0d211f] p-8 rounded-2xl border border-white/[0.03] flex flex-col justify-center gap-4">
-                          <div className="grid grid-cols-[185px_1fr] text-[15px] font-bold">
+                        <div className="flex-1 bg-gradient-to-r from-[#111] to-[#0d211f] p-8 rounded-2xl border border-white/[0.03] flex flex-col justify-center gap-1">
+                          <div className="grid grid-cols-[150px_1fr] text-[15px] font-bold">
                             <span className="text-zinc-100 uppercase tracking-widest">ID AKUN</span>
                             <span className="text-zinc-100">: {generatedData.phoneNumber}</span>
                           </div>
-                          <div className="grid grid-cols-[185px_1fr] text-[15px] font-bold">
+                          <div className="grid grid-cols-[150px_1fr] text-[15px] font-bold">
                             <span className="text-zinc-100 uppercase tracking-widest">HARGA PRODUK</span>
                             <span className="text-zinc-100">: {formatIDR(generatedData.productPrice)}</span>
                           </div>
-                          <div className="grid grid-cols-[185px_1fr] text-[15px] font-bold">
+                          <div className="grid grid-cols-[150px_1fr] text-[15px] font-bold">
                             <span className="text-zinc-100 uppercase tracking-widest">KOMISI</span>
                             <span className="text-zinc-100">: 20%-50%</span>
                           </div>
@@ -311,7 +311,7 @@ const App: React.FC = () => {
                     {/* PLEASE READ CARD */}
                     <div className="bg-[#0a0a0a] p-10 rounded-[2rem] border border-zinc-900/50 shadow-2xl h-fit">
                       <div className="flex justify-between items-center mb-5">
-                        <h3 className="text-[34px] font-poppins font-semibold text-white">Please read</h3>
+                        <h3 className="text-2xl font-poppins font-semibold text-white">Please read</h3>
                         <MoreHorizontal className="text-white w-9 h-9" />
                       </div>
                       
