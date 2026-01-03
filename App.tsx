@@ -140,6 +140,8 @@ const App: React.FC = () => {
             >
               <option value={JobType.SINGLE}>1 Pesanan - 1 Produk</option>
               <option value={JobType.TRIPLE}>1 Pesanan - 3 Produk</option>
+              <option value={JobType.QUAD}>1 Pesanan - 4 Produk</option>
+              <option value={JobType.PENTA}>1 Pesanan - 5 Produk</option>
             </select>
           </div>
           <div>
@@ -295,15 +297,15 @@ const App: React.FC = () => {
               <div className="space-y-8">
                 <div className="bg-[#0a0a0a] p-6 rounded-xl border border-zinc-800 shadow-2xl">
                   <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-2xl font-semibold">Please read</h3>
+                    <h3 className="text-2xl font-semibold">Please Read</h3>
                     <MoreHorizontal className="text-white" />
                   </div>
                   <ul className="space-y-2 text-sm text-zinc-400">
                     <li>Detail Tugas ini merupakan bagian dari perjanjian antara Pengguna dan Pihak Gucci Sistem.</li>
-                    <li>Setiap dana yang dikirim oleh Pengguna kepada Pihak Sistem Prada akan secara otomatis dikonversi menjadi Saldo Akun Kerja milik Pengguna.</li>
+                    <li>Setiap dana yang dikirim oleh Pengguna kepada Pihak Sistem Gruci akan secara otomatis dikonversi menjadi Saldo Akun Kerja milik Pengguna.</li>
                     <li>Seluruh proses pelaksanaan tugas dilaksanakan sesuai dengan prosedur dan ketentuan yang berlaku pada Sistem Gucci.</li>
                     <li>Dengan melakukan aktivasi tugas, Pengguna menyatakan telah membaca, memahami, dan menyetujui seluruh isi perjanjian, termasuk ketentuan mengenai konversi dana menjadi saldo akun kerja serta mekanisme penyelesaian tugas.</li>
-                    <li>Dokumen ini berlaku sebagai bukti sah persetujuan antara Pengguna dan Pihak Sistem Prada tanpa memerlukan tanda tangan tertulis.</li>
+                    <li>Dokumen ini berlaku sebagai bukti sah persetujuan antara Pengguna dan Pihak Sistem Gucci tanpa memerlukan tanda tangan tertulis.</li>
                   </ul>
                 </div>
 
